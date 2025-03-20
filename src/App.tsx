@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// src/App.tsx
+import React, { useState } from 'react';
+import LoginForm from './components/LoginForm';
 
 function App() {
+  const [token, setToken] = useState<string | null>(null);
+
+  const handleLoginSuccess = (receivedToken: string) => {
+    // Store the token in localStorage
+    localStorage.setItem('token', receivedToken);
+    setToken(receivedToken);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {!token ? (
+        <LoginForm onLoginSuccess={handleLoginSuccess} />
+      ) : (
+        <div>
+          <h2>Welcome!</h2>
+          <p>You are logged in. Your token: {token}</p>
+        </div>
+      )}
     </div>
   );
 }
