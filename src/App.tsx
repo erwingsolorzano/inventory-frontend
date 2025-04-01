@@ -1,22 +1,24 @@
 // src/App.tsx
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
+import Dashboard from './pages/Dashboard';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline, Container, Typography, Button, Box } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const theme = createTheme({
   palette: {
     background: {
-      default: '#f5f5f5',  // Global background
+      default: '#f5f5f5', // Global background
     },
     primary: {
-      main: '#3498db',     // Primary color (buttons, highlights)
+      main: '#3498db',
     },
     secondary: {
-      main: '#2ecc71',     // Accent color (optional)
+      main: '#2ecc71',
     },
     text: {
-      primary: '#2c3e50',  // Text & labels
+      primary: '#2c3e50',
     },
   },
 });
@@ -37,23 +39,20 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {!token ? (
-        <LoginForm onLoginSuccess={handleLoginSuccess} />
-      ) : (
-        <Container sx={{ mt: 4 }}>
-          <Typography variant="h4" align="center" gutterBottom>
-            Welcome!
-          </Typography>
-          <Typography variant="body1" align="center" gutterBottom>
-            You are logged in. Your token: {token}
-          </Typography>
-          <Box display="flex" justifyContent="center">
-            <Button variant="contained" color="primary" onClick={handleLogout}>
-              Logout
-            </Button>
-          </Box>
-        </Container>
-      )}
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              !token ? (
+                <LoginForm onLoginSuccess={handleLoginSuccess} />
+              ) : (
+                <Dashboard onLogout={handleLogout} />
+              )
+            }
+          />
+        </Routes>
+      </Router>
     </ThemeProvider>
   );
 }

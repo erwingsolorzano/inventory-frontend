@@ -1,6 +1,7 @@
 // src/components/LoginForm.tsx
 import React, { useState } from 'react';
 import { Box, Button, Container, TextField, Typography, Paper, Fade } from '@mui/material';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
 
 interface LoginFormProps {
@@ -37,29 +38,36 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <Container 
-      maxWidth="sm" 
+    <Container
+      maxWidth="sm"
       sx={{
-        minHeight: '100vh', 
-        display: 'flex', 
-        alignItems: 'center', 
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'background.default'
+        // Use an inventory-themed background image; replace the URL with your actual image
+        backgroundImage: 'url(https://via.placeholder.com/1920x1080?text=Inventory+Warehouse)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
-      <Fade in timeout={500}>
-        <Paper 
-          elevation={3} 
+      <Fade in timeout={600}>
+        <Paper
+          elevation={6}
           sx={{
-            padding: 4, 
-            borderRadius: 2, 
-            width: '100%', 
-            backgroundColor: '#ffffff'
+            p: 4,
+            borderRadius: 2,
+            width: '100%',
+            maxWidth: 400,
+            backgroundColor: 'rgba(255, 255, 255, 0.9)', // semi-transparent white for a modern look
           }}
         >
-          <Typography variant="h4" align="center" color="text.primary" gutterBottom>
-            Login
-          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+            <InventoryIcon sx={{ fontSize: 48, color: 'primary.main' }} />
+            <Typography variant="h4" align="center" color="text.primary" gutterBottom>
+              Inventory Login
+            </Typography>
+          </Box>
           {error && (
             <Typography variant="body1" align="center" color="error" gutterBottom>
               {error}
@@ -85,11 +93,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button 
-              type="submit" 
-              variant="contained" 
-              color="primary" 
-              fullWidth 
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
               sx={{ mt: 2 }}
               disabled={loading}
             >
