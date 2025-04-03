@@ -1,8 +1,8 @@
 // src/components/LoginForm.tsx
 import React, { useState } from 'react';
 import { Box, Button, Container, TextField, Typography, Paper, Fade } from '@mui/material';
-import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
+import ShapeAnimation from './ShapeAnimation';
 
 interface LoginFormProps {
   onLoginSuccess: (token: string) => void;
@@ -19,19 +19,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
     setError('');
     setLoading(true);
     try {
-      // Adjust the URL to match your backend endpoint
-      const response = await axios.post('http://localhost:3000/auth/login', {
-        email,
-        password,
-      });
+      // Ajusta la URL de tu endpoint de login
+      const response = await axios.post('http://localhost:3000/auth/login', { email, password });
       const { token } = response.data;
       if (token) {
+        // Espera 2 segundos para que se vea la animación
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         onLoginSuccess(token);
       } else {
-        setError('Login failed: no token returned');
+        setError('Error: no se recibió token.');
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login error');
+      setError(err.response?.data?.message || 'Error al iniciar sesión');
     } finally {
       setLoading(false);
     }
@@ -45,10 +44,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        // Use an inventory-themed background image; replace the URL with your actual image
-        backgroundImage: 'url(https://via.placeholder.com/1920x1080?text=Inventory+Warehouse)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundColor: '#f5f5f5',
       }}
     >
       <Fade in timeout={600}>
@@ -59,12 +55,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
             borderRadius: 2,
             width: '100%',
             maxWidth: 400,
-            backgroundColor: 'rgba(255, 255, 255, 0.9)', // semi-transparent white for a modern look
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
           }}
         >
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
-            <InventoryIcon sx={{ fontSize: 48, color: 'primary.main' }} />
-            <Typography variant="h4" align="center" color="text.primary" gutterBottom>
+            {/* Se muestra la animación: por defecto se ve el cuadrado, y cuando loading=true se transforma en círculo rotatorio */}
+            <ShapeAnimation loading={loading} />
+            <Typography variant="h5" align="center" color="text.primary" gutterBottom sx={{ mt: 2 }}>
               Inventory Login
             </Typography>
           </Box>
@@ -101,7 +98,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
               sx={{ mt: 2 }}
               disabled={loading}
             >
-              {loading ? 'Logging in...' : 'Login'}
+              {loading ? 'Iniciando...' : 'Iniciar Sesión'}
             </Button>
           </Box>
         </Paper>

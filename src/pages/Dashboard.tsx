@@ -10,14 +10,14 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   return (
     <Container sx={{ mt: 4 }}>
       <Typography variant="h4" align="center" gutterBottom>
-        Welcome to the Inventory Dashboard!
+        ¡Bienvenido al Dashboard de Inventario!
       </Typography>
       <Typography variant="body1" align="center" gutterBottom>
-        You are logged in.
+        Has iniciado sesión exitosamente.
       </Typography>
       <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
         <Button variant="contained" color="primary" onClick={onLogout}>
-          Sign Out
+          Cerrar Sesión
         </Button>
       </Box>
     </Container>
