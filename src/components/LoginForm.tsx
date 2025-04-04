@@ -1,8 +1,7 @@
-// src/components/LoginForm.tsx
 import React, { useState } from 'react';
 import { Box, Button, Container, TextField, Typography, Paper, Fade } from '@mui/material';
 import axios from 'axios';
-import ShapeAnimation from './ShapeAnimation';
+import FeedbackAnimation from './FeedbackAnimation';
 
 interface LoginFormProps {
   onLoginSuccess: (token: string) => void;
@@ -12,27 +11,31 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<'initial' | 'loading' | 'success' | 'failure'>('initial');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
+    setStatus('loading');
     try {
-      // Ajusta la URL de tu endpoint de login
+      // Ajusta la URL a tu endpoint de autenticación
       const response = await axios.post('http://localhost:3000/auth/login', { email, password });
       const { token } = response.data;
       if (token) {
-        // Espera 2 segundos para que se vea la animación
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setStatus('success');
+        await new Promise((resolve) => setTimeout(resolve, 500));
         onLoginSuccess(token);
       } else {
         setError('Error: no se recibió token.');
+        setStatus('failure');
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setStatus('initial');
       }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error al iniciar sesión');
-    } finally {
-      setLoading(false);
+      setStatus('failure');
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      setStatus('initial');
     }
   };
 
@@ -59,8 +62,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
           }}
         >
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
-            {/* Se muestra la animación: por defecto se ve el cuadrado, y cuando loading=true se transforma en círculo rotatorio */}
-            <ShapeAnimation loading={loading} />
+            <FeedbackAnimation status={status} />
             <Typography variant="h5" align="center" color="text.primary" gutterBottom sx={{ mt: 2 }}>
               Inventory Login
             </Typography>
@@ -96,9 +98,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
               color="primary"
               fullWidth
               sx={{ mt: 2 }}
-              disabled={loading}
+              disabled={status === 'loading'}
             >
-              {loading ? 'Iniciando...' : 'Iniciar Sesión'}
+              {status === 'loading' ? 'Iniciando...' : 'Iniciar Sesión'}
             </Button>
           </Box>
         </Paper>
