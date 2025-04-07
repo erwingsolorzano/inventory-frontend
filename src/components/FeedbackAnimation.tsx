@@ -9,6 +9,13 @@ interface FeedbackAnimationProps {
   status: 'initial' | 'loading' | 'success' | 'failure';
 }
 
+const animationProps = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.8 },
+  transition: { duration: 0.15, ease: 'easeInOut' },
+};
+
 const FeedbackAnimation: React.FC<FeedbackAnimationProps> = ({ status }) => {
   return (
     <div style={{ position: 'relative', width: '80px', height: '80px' }}>
@@ -16,11 +23,11 @@ const FeedbackAnimation: React.FC<FeedbackAnimationProps> = ({ status }) => {
         {status === 'initial' && (
           <motion.div
             key="initial"
-            initial={{ opacity: 0, scale: 0.8, y: -20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            {...animationProps}
             style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
               width: '80px',
               height: '80px',
               display: 'flex',
@@ -28,25 +35,18 @@ const FeedbackAnimation: React.FC<FeedbackAnimationProps> = ({ status }) => {
               justifyContent: 'center',
             }}
           >
-            <ComputerIcon sx={{ fontSize: 80, color: '#3498db' }} />
+            <ComputerIcon sx={{ fontSize: 80, color: 'var(--color-primary)' }} />
           </motion.div>
         )}
 
         {status === 'loading' && (
           <motion.div
             key="loading"
-            initial={{ opacity: 0, scale: 0.8, y: 0 }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              y: 0,
-            }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            transition={{
-              opacity: { duration: 0.1, ease: 'easeInOut' },
-              scale: { duration: 0.1, ease: 'easeInOut' },
-            }}
+            {...animationProps}
             style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
               width: '80px',
               height: '80px',
               backgroundColor: '#3498db',
@@ -61,10 +61,7 @@ const FeedbackAnimation: React.FC<FeedbackAnimationProps> = ({ status }) => {
         {(status === 'success' || status === 'failure') && (
           <motion.div
             key={status}
-            initial={{ opacity: 0, y: -20, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.8 }}
-            transition={{ duration: 0.1, ease: 'easeInOut' }}
+            {...animationProps}
             style={{
               position: 'absolute',
               top: 0,
