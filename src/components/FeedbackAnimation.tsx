@@ -39,24 +39,25 @@ const FeedbackAnimation: React.FC<FeedbackAnimationProps> = ({ status }) => {
           </motion.div>
         )}
 
-        {status === 'loading' && (
-          <motion.div
-            key="loading"
-            {...animationProps}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '80px',
-              height: '80px',
-              backgroundColor: '#3498db',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          />
-        )}
+{status === 'loading' && (
+  <motion.div
+    key="loading"
+    {...animationProps}
+    style={{
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      width: '80px',
+      height: '80px',
+      border: '4px solid #ccc',
+      borderTop: '4px solid #4e17e3',
+      borderRadius: '50%',
+      animation: 'spin 1s linear infinite',
+      transform: 'translate(-50%, -50%)',
+    }}
+  />
+)}
+
 
         {(status === 'success' || status === 'failure') && (
           <motion.div
